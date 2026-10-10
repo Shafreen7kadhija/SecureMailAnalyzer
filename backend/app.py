@@ -56,6 +56,7 @@ ALLOWED_ORIGINS = [
     "http://localhost:5000",
     "http://127.0.0.1:3000",
     "http://localhost:3000",
+    "https://securemailanalyzer.onrender.com",
 ]
 CORS(
     app,
@@ -122,8 +123,15 @@ def setup_if_needed():
 
     # Validate Host header to protect against DNS rebinding attacks targeting localhost
     host_header = request.host.split(":")[0].lower()
-    if host_header not in {"127.0.0.1", "localhost", "testserver"}:
-        return jsonify({"error": "Invalid Host header. Access rejected."}), 400
+allowed_hosts = {
+    "127.0.0.1",
+    "localhost",
+    "testserver",
+    "securemailanalyzer.onrender.com",
+}
+
+if host_header not in allowed_hosts:
+    return jsonify({"error": "Invalid Host header. Access rejected."}), 400
 
 
 @app.route("/api/health", methods=["GET"])
