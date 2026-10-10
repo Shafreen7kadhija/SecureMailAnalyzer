@@ -116,22 +116,23 @@ def verify_origin_protection() -> Tuple[bool, str]:
     return True, ""
 
 
+
 @app.before_request
 def setup_if_needed():
     # Ensure database tables exist
     init_db()
 
-    # Validate Host header to protect against DNS rebinding attacks targeting localhost
+    # Validate Host header to protect against DNS rebinding attacks
     host_header = request.host.split(":")[0].lower()
-allowed_hosts = {
-    "127.0.0.1",
-    "localhost",
-    "testserver",
-    "securemailanalyzer.onrender.com",
-}
+    allowed_hosts = {
+        "127.0.0.1",
+        "localhost",
+        "testserver",
+        "securemailanalyzer.onrender.com",
+    }
 
-if host_header not in allowed_hosts:
-    return jsonify({"error": "Invalid Host header. Access rejected."}), 400
+    if host_header not in allowed_hosts:
+        return jsonify({"error": "Invalid Host header. Access rejected."}), 400
 
 
 @app.route("/api/health", methods=["GET"])
