@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SecureMailAnalyzer Extension</title>
+  <style>
+    body {
+      width: 320px;
+      margin: 0;
+      padding: 16px;
+      background: #090d16;
+      color: #f8fafc;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 12px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #1e293b;
+      margin-bottom: 12px;
+    }
+    .logo-box {
+      width: 32px;
+      height: 32px;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid #06b6d4;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+    .title {
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+    }
+    .sub {
+      color: #94a3b8;
+      font-size: 10px;
+    }
+    .status-card {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .status-row:last-child { margin-bottom: 0; }
+    .status-label { color: #94a3b8; }
+    .status-val { font-weight: 600; font-family: monospace; }
+    .val-online { color: #10b981; }
+    .val-offline { color: #ef4444; }
+    .val-active { color: #38bdf8; }
+    .btn {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      padding: 9px;
+      background: #06b6d4;
+      color: #090d16;
+      border-radius: 8px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      font-size: 11px;
+      transition: background 0.15s ease;
+    }
+    .btn:hover { background: #22d3ee; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo-box">🛡️</div>
+    <div>
+      <div class="title">SecureMailAnalyzer</div>
+      <div class="sub">Gmail Pre-Download Enforcement</div>
+    </div>
+  </div>
+
+  <div class="status-card">
+    <div class="status-row">
+      <span class="status-label">SOC Backend:</span>
+      <span id="backend-status" class="status-val val-offline">CHECKING...</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Enforcement Mode:</span>
+      <span class="status-val val-active">STRICT (High/Crit)</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Protected Domain:</span>
+      <span class="status-val">mail.google.com</span>
+    </div>
+    <div class="status-row">
+      <span class="status-label">Fail-Closed Safety:</span>
+      <span class="status-val val-online">ACTIVE</span>
+    </div>
+  </div>
+
+  <button id="open-dashboard" class="btn">Open SOC Threat Console</button>
+
+  <script src="popup.js"></script>
+</body>
+</html>

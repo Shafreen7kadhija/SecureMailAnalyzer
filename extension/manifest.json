@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "SecureMailAnalyzer — Gmail Pre-Download Protection",
+  "version": "1.0.0",
+  "description": "Pre-download threat inspection and download blocking for Gmail attachments via SecureMailAnalyzer SOC platform.",
+  "permissions": [
+    "downloads",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://mail.google.com/*",
+    "http://127.0.0.1:5000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://mail.google.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "modal.css"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icons/icon.svg"
+    }
+  },
+  "icons": {
+    "128": "icons/icon.svg"
+  }
+}

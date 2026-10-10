@@ -1,0 +1,6 @@
+This is a legitimate quarterly financial memo for Internal Audit review.
+File format: Plain UTF-8 Text
+Content: Clean text document containing harmless operational notes.
+No scripts, no embedded macros, no active content.
+Date: October 2026
+Author: Finance Operations

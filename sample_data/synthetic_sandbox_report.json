@@ -1,0 +1,104 @@
+{
+  "sandbox_metadata": {
+    "report_version": "1.2.0",
+    "analyzer_version": "Cuckoo-Emulated-v4.1",
+    "analysis_environment": "Windows 10 x64 (Sandbox VM Isolated)",
+    "execution_time_seconds": 124,
+    "sample_sha256": "SYNTHETIC_BEHAVIOR_DEMO_HASH_8F1A9C",
+    "target_filename": "invoice_october_statement.pdf.bat",
+    "disclaimer": "SYNTHETIC DEMONSTRATION REPORT - Non-destructive simulated sandbox events for presentation and education."
+  },
+  "summary": {
+    "verdict": "MALICIOUS",
+    "threat_score": 88,
+    "total_events": 6,
+    "categories_triggered": [
+      "process_creation",
+      "network_connection",
+      "file_modification",
+      "registry_persistence",
+      "evasion_activity"
+    ]
+  },
+  "events": [
+    {
+      "timestamp": "2026-10-10T09:41:12Z",
+      "category": "process_creation",
+      "event_title": "Script Interpreter Spawned Hidden Command Prompt",
+      "severity": "HIGH",
+      "description": "Parent process initiated cmd.exe with window hiding flags and encoded arguments.",
+      "details": {
+        "parent_process": "explorer.exe",
+        "process_name": "cmd.exe",
+        "pid": 4820,
+        "command_line": "cmd.exe /c start /min powershell.exe -WindowStyle Hidden -Enc JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0..."
+      }
+    },
+    {
+      "timestamp": "2026-10-10T09:41:15Z",
+      "category": "process_creation",
+      "event_title": "PowerShell Script Invoked with ExecutionPolicy Bypass",
+      "severity": "CRITICAL",
+      "description": "Spawned child PowerShell instance bypassing local execution policy restrictions to run memory payload.",
+      "details": {
+        "parent_process": "cmd.exe (PID 4820)",
+        "process_name": "powershell.exe",
+        "pid": 5104,
+        "command_line": "powershell.exe -NoP -NonI -W Hidden -Exec Bypass -Command [System.Net.ServicePointManager]::SecurityProtocol = 3072"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T09:41:22Z",
+      "category": "network_connection",
+      "event_title": "Outbound HTTP Beacon to Suspicious External IP",
+      "severity": "HIGH",
+      "description": "Attempted outbound HTTP POST beacon on non-standard port to external staging infrastructure.",
+      "details": {
+        "process_name": "powershell.exe (PID 5104)",
+        "destination_ip": "198.51.100.24",
+        "destination_port": 8443,
+        "protocol": "TCP/TLS",
+        "domain_or_uri": "https://198.51.100.24:8443/gateway/api/telemetry"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T09:41:29Z",
+      "category": "file_modification",
+      "event_title": "Payload Staged into User AppData Temp Directory",
+      "severity": "MEDIUM",
+      "description": "Wrote hidden executable artifact into roaming temporary storage directory commonly used for staging.",
+      "details": {
+        "process_name": "powershell.exe",
+        "file_path": "C:\\Users\\Victim\\AppData\\Local\\Temp\\update_agent_x64.dll",
+        "action": "CREATE_WRITE",
+        "bytes_written": 45056
+      }
+    },
+    {
+      "timestamp": "2026-10-10T09:41:38Z",
+      "category": "registry_persistence",
+      "event_title": "Persistence Established via CurrentVersion Run Key",
+      "severity": "CRITICAL",
+      "description": "Modified user registry Run key to ensure automatic invocation upon future system logon.",
+      "details": {
+        "process_name": "powershell.exe",
+        "registry_key": "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run",
+        "registry_value_name": "UpdateSecurityAgent",
+        "registry_value_data": "rundll32.exe C:\\Users\\Victim\\AppData\\Local\\Temp\\update_agent_x64.dll,StartRoutine"
+      }
+    },
+    {
+      "timestamp": "2026-10-10T09:41:45Z",
+      "category": "evasion_activity",
+      "event_title": "AMSI Memory Patching & Anti-Analysis Hook Attempt",
+      "severity": "HIGH",
+      "description": "Attempted memory modification on AmsiScanBuffer address in amsi.dll to suppress antivirus detection.",
+      "details": {
+        "process_name": "powershell.exe",
+        "target_module": "amsi.dll",
+        "function_targeted": "AmsiScanBuffer",
+        "memory_action": "VirtualProtect (PAGE_EXECUTE_READWRITE)"
+      }
+    }
+  ]
+}
